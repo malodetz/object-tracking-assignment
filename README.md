@@ -14,6 +14,11 @@ pip install -r requirements.txt
 python3 -m uvicorn fastapi_server:app --reload --port 8001 
 ```
 
+Запуск веб сервера http://localhost:8000/
+```
+python3 -m http.server
+```
+
 ### Постановка задачи
 
 Реализуйте методы tracker_soft и tracker_strong в скрипте fastapi_server.py,
