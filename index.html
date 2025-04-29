@@ -154,7 +154,7 @@
 
     function connect() {
         // изменить на true, чтобы сохранить картинки по каждому фрему
-        var make_screenshot = false
+        var make_screenshot = true
         var country_balls = []
 
         try {
@@ -176,11 +176,11 @@
             if (typeof event.data === 'string') {
                 try {
                     console.log("Received WebSocket data:", event.data);
-                    // let fixedData = event.data.replace(/'/g, '"');
+                    let fixedData = event.data.replace(/'/g, '"');
                     var info = JSON.parse(event.data)
-                    // var frame_id = event.frame_id
+                    var frame_id = event.frame_id
                     console.log('frame_id: ' + info['frame_id'])
-                    // console.log('frame_id: ' + frame_id)
+                    console.log('frame_id: ' + frame_id)
                     for (let track of info['data']) {
                         var cb_el = country_balls.find(country_balls => country_balls.getAttr('cb_id') === track['cb_id'])
                         console.log(track)
@@ -193,17 +193,17 @@
                         cb_el.attrs.set_id(track['track_id'])
                         cb_el.attrs.set_coords('[' + track['bounding_box'].join(', ') + ']')
                     }
-                    // if (make_screenshot) {
-                    //     var uri = stage.toDataURL({pixelRatio: 3});
-                    //     var link = document.createElement('a');
-                    //     link.download = info['frame_id'] + '.png';
-                    //     // link.download = frame_id + '.png';
-                    //     link.href = uri;
-                    //     document.body.appendChild(link);
-                    //     link.click();
-                    //     // document.body.removeChild(link);
-                    //     // delete link;
-                    // }
+                    if (make_screenshot) {
+                        var uri = stage.toDataURL({pixelRatio: 3});
+                        var link = document.createElement('a');
+                        link.download = info['frame_id'] + '.png';
+                        link.download = frame_id + '.png';
+                        link.href = uri;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        delete link;
+                    }
 
                 } catch (err) {
                     console.log(err)
@@ -221,7 +221,7 @@
                         await (new Promise(resolve => setTimeout(resolve, 100)));
                         uri = stage.toDataURL({pixelRatio: 3});
                     }
-                    // console.log(uri)
+                    console.log(uri)
                     ws.send(uri);
                 }
             }
